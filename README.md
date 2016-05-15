@@ -9,7 +9,7 @@
  5. `npm install express --save`
  6. `npm install csv-parse`
 
- **Mac Environment Setup Instructions**
+**Mac Environment Setup Instructions**
  1. Download and install NodeJS from https://nodejs.org/en/download/
  2. `git clone git@github.com:wmgroot/ol.git`
  3. `cd ol`
