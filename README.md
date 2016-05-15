@@ -2,10 +2,19 @@
 ### Business data API Web Server running on NodeJS.
 
 **Linux Environment Setup Instructions**
- 1. `sudo apt-get install nodejs`
- 2. `export PATH=$PATH:/usr/local/nodejs/bin`
- 3. `npm install express --save`
- 4. `npm install csv-parse`
+ 1. `git clone git@github.com:wmgroot/ol.git`
+ 2. `cd ol`
+ 3. `sudo apt-get install nodejs`
+ 4. `export PATH=$PATH:/usr/local/nodejs/bin`
+ 5. `npm install express --save`
+ 6. `npm install csv-parse`
+
+ **Mac Environment Setup Instructions**
+ 1. Download and install NodeJS from https://nodejs.org/en/download/
+ 2. `git clone git@github.com:wmgroot/ol.git`
+ 3. `cd ol`
+ 4. `npm install express --save`
+ 5. `npm install csv-parse`
 
 **Spec Test Setup Instructions**
  1. `sudo npm install jasmine-node -g`
@@ -13,7 +22,7 @@
 
 **Running the API Server**
  1. `node main.js`
- 2. The application is hard coded to operate on port 8081. You can access the API by making requests to http://127.0.0.1:8081.
+ 2. The application is hard coded to operate on port 8081. You can access the API by making requests to http://127.0.0.1:8081/
 
 **Features**
  1. GET a business by id.
