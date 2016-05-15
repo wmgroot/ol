@@ -61,8 +61,8 @@ function getDataPage(page, page_size){
 }
 
 var server = app.listen(8081, function(){
-  var host = server.address().address
-  var port = server.address().port
+  var host = server.address().address;
+  var port = server.address().port;
 
   console.log("loading raw data... ");
   raw_data = fs.readFileSync('./50k_businesses.csv', 'utf-8');
@@ -70,7 +70,7 @@ var server = app.listen(8081, function(){
   businesses = csv_parser(raw_data, {columns: true});
   console.log("ready!");
 
-  console.log('Application listening at http://%s:%s', host, port)
+  console.log('Application listening at http://127.0.0.1:8081/');
 });
 
 exports.closeServer = function(){
