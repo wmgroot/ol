@@ -15,6 +15,7 @@ app.get('/businesses/:id', function(request, response){
   access_token = request.headers['x-access-token'];
   if(access_token != secret_token){
     response.status(401).json({message: "Unauthorized access."}).end();
+    return;
   }
   else{
 
@@ -34,6 +35,12 @@ app.get('/businesses/:id', function(request, response){
 })
 
 app.get('/businesses', function(request, response){
+    access_token = request.headers['x-access-token'];
+    if(access_token != secret_token){
+      response.status(401).json({message: "Unauthorized access."}).end();
+      return;
+    }
+
   console.log("request query: " + JSON.stringify(request.query));
   var _page = request.query.page == null ? 0 : parseInt(request.query.page);
   var _page_size = request.query.page_size == null ? 50 : parseInt(request.query.page_size);
@@ -70,7 +77,7 @@ function getDataPage(page, page_size){
   var start = page * page_size;
   var end = start + page_size;
   console.log("page contains #" + start + " to #" + (end - 1));
-  
+
   if(start >= businesses.length) start = -1;
   if(end > businesses.length) end = businesses.length;
 
@@ -94,4 +101,3 @@ var server = app.listen(8081, function(){
 exports.closeServer = function(){
   server.close();
 };
-
