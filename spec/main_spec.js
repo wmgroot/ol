@@ -9,9 +9,14 @@ describe('requests', function(){
   });
 
   describe('GET /businesses/:id', function(){
+    var options = {
+        url: base_url + '/businesses/',
+        method: 'GET',
+        headers: {'x-access-token': 'eggs_and_bacon'}};
 
     it("returns status code 200 for an existing low id", function(done) {
-      request.get(base_url + '/businesses/0', function(error, response, body) {
+      options.url = base_url + '/businesses/0'
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(200);
         done();
       });
@@ -210,19 +215,34 @@ describe('requests', function(){
 
   });
 
-  describe('POST /authenticate', function(){
+  /*describe('POST /authenticate', function(){
     
     it("returns a 404 error for a bad username", function(done) {
-      request.post(base_url + '/authenticate', '{"username":"Bad"}', function(error, response, body) {
+      var options = {url: base_url + '/authenticate',
+                     method: 'POST',
+                     json: {username: 'Bad'}}
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(404);
         expect(body).toBe("Invalid Username or Password!");
         done();
       });
     });
   
-  });
+  });*/
 
   describe('misc routes', function(){
+
+    /*it("can access with access token", function(done) {
+      var options = {
+        url: base_url + '/businesses',
+        method: 'GET',
+        headers: {'x-access-token': 'eggs_and_bacon'}};
+      request(options, function(error, response, body) {
+        expect(response.statusCode).toBe(404);
+        expect(body).toBe("Invalid URL!");
+        done();
+      });
+    });*/
     
     it("returns a 404 error for an invalid URL", function(done) {
       request.get(base_url + '/', function(error, response, body) {

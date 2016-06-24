@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var jwt = require('jsonwebtoken');
 var exports = module.exports = {'secret':'eggsandbacon'};
+var secret_token = 'eggs_and_bacon';
 
 
 var fs = require('fs');
@@ -11,6 +12,11 @@ var raw_data;
 var businesses;
 
 app.get('/businesses/:id', function(request, response){
+  access_token = request.headers['x-access-token'];
+  if(access_token != secret_token){
+    response.status(401).json({message: "Unauthorized access."}).end();
+  }
+
   console.log("request params: " + JSON.stringify(request.params));
   var _id = parseInt(request.params.id);
 
