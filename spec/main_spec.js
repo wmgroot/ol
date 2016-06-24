@@ -9,10 +9,13 @@ describe('requests', function(){
   });
 
   describe('GET /businesses/:id', function(){
-    var options = {
-        url: base_url + '/businesses/',
-        method: 'GET',
-        headers: {'x-access-token': 'eggs_and_bacon'}};
+    var options;
+    beforeEach(function(){
+      options = {
+          url: base_url + '/businesses/',
+          method: 'GET',
+          headers: {'x-access-token': 'eggs_and_bacon'}};
+    });
 
     it("returns status code 200 for an existing low id", function(done) {
       options.url = base_url + '/businesses/0';
@@ -104,10 +107,13 @@ describe('requests', function(){
   });
 
   describe('GET /businesses', function(){
-  var options = {
-      url: base_url + '/businesses/',
-      method: 'GET',
-      headers: {'x-access-token': 'eggs_and_bacon'}};
+    var options;
+    beforeEach(function(){
+      options = {
+        url: base_url + '/businesses/',
+        method: 'GET',
+        headers: {'x-access-token': 'eggs_and_bacon'}};
+    });
 
     it("returns by default the first 50 businesses", function(done) {
       options.url = base_url + '/businesses';
