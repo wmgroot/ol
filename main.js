@@ -1,3 +1,4 @@
+var mongo_client = require('mongodb').MongoClient;
 var express = require('express');
 var app = express();
 var exports = module.exports = {};
@@ -46,6 +47,28 @@ app.all('*', function(request, response) {
   response.status(404).end("Invalid URL!");
 });
 
+// assumes id is a string
+function getBusinesses(query){
+  mongo_client.connect(url, function(err, db) {
+    assert.equal(null, err);
+    findBusinesses(db, query, function() {
+        db.close();
+    });
+  });
+}
+
+var findBusinesses = function(db, query, callback){
+   var cursor = db.collection('businesses').find();
+   cursor.each(function(err, doc) {
+      assert.equal(err, null);
+      if (doc != null) {
+         console.dir(doc);
+      } else {
+         callback();
+      }
+   });
+};
+
 function getDataPage(page, page_size){
   if(page == null) page = 0;
   if(page_size == null) page_size = 50;
@@ -60,6 +83,22 @@ function getDataPage(page, page_size){
   return start >= 0 ? businesses.slice(start, end) : null;
 }
 
+// assumes a json format
+function load_data_into_mongo(db, data){
+  db.collection('businesses').drop();
+  var col = db.collection('businesses');  // will create the businesses collection if it does not exist
+  col.insertMany(data, function(err, result) {
+    if(err){
+      console.log("could not insert data into mongo: " + err);
+    }
+    else{
+      console.log("inserted " + result.insertedCount + " documents into mongo");
+    }
+    
+    db.close();
+  });
+}
+
 var server = app.listen(8081, function(){
   var host = server.address().address;
   var port = server.address().port;
@@ -68,8 +107,20 @@ var server = app.listen(8081, function(){
   raw_data = fs.readFileSync('./50k_businesses.csv', 'utf-8');
   console.log("converting data to json... ");
   businesses = csv_parser(raw_data, {columns: true});
-  console.log("ready!");
 
+  console.log("preparing mongo... ");
+  var mongo_url = 'mongodb://localhost:27017/ol';
+  mongo_client.connect(mongo_url, function(err, db) {
+    if(err){  
+      console.log("could not connect to the mongodb server: " + err);
+    }
+    else{
+      console.log("connected correctly to mongodb server");
+      load_data_into_mongo(db, businesses);
+    }
+  });
+
+  console.log("ready!");
   console.log('Application listening at http://127.0.0.1:8081/');
 });
 
