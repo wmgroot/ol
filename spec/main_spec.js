@@ -30,6 +30,22 @@ describe('requests', function(){
       });
     });
 
+    it("returns status code 401 with no access_token", function(done) {
+      options.headers = {}
+      request(options, function(error, response, body) {
+        expect(response.statusCode).toBe(401);
+        done();
+      });
+    });
+
+    it("returns status code 401 with an incorrect access_token", function(done) {
+      options.headers = {'x-access-token': 'potato_and_egg'}
+      request(options, function(error, response, body) {
+        expect(response.statusCode).toBe(401);
+        done();
+      });
+    });
+
     it("returns a code 404 error for a nonexistant negative id", function(done) {
       options.url = base_url + '/businesses/-1';
       request(options, function(error, response, body) {
@@ -117,6 +133,22 @@ describe('requests', function(){
         expect(json.businesses[json.businesses.length - 1].id).toBe('549');
         expect(json.page).toBe(10);
         expect(json.page_size).toBe(50);
+        done();
+      });
+    });
+
+    it("returns status code 401 with no access_token", function(done) {
+      options.headers = {}
+      request(options, function(error, response, body) {
+        expect(response.statusCode).toBe(401);
+        done();
+      });
+    });
+
+    it("returns status code 401 with an incorrect access_token", function(done) {
+      options.headers = {'x-access-token': 'potato_and_egg'}
+      request(options, function(error, response, body) {
+        expect(response.statusCode).toBe(401);
         done();
       });
     });
