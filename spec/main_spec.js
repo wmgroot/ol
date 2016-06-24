@@ -15,7 +15,7 @@ describe('requests', function(){
         headers: {'x-access-token': 'eggs_and_bacon'}};
 
     it("returns status code 200 for an existing low id", function(done) {
-      options.url = base_url + '/businesses/0'
+      options.url = base_url + '/businesses/0';
       request(options, function(error, response, body) {
         expect(response.statusCode).toBe(200);
         done();
@@ -23,14 +23,16 @@ describe('requests', function(){
     });
 
     it("returns status code 200 for an existing high id", function(done) {
-      request.get(base_url + '/businesses/49999', function(error, response, body) {
+      options.url = base_url + '/businesses/49999';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(200);
         done();
       });
     });
 
     it("returns a code 404 error for a nonexistant negative id", function(done) {
-      request.get(base_url + '/businesses/-1', function(error, response, body) {
+      options.url = base_url + '/businesses/-1';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(404);
         var json = JSON.parse(body);
         expect(json.message).toBe("Business not found!");
@@ -40,7 +42,8 @@ describe('requests', function(){
     });
 
     it("returns a code 404 error for a nonexistant high id", function(done) {
-      request.get(base_url + '/businesses/50000', function(error, response, body) {
+      options.url = base_url + '/businesses/50000';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(404);
         var json = JSON.parse(body);
         expect(json.message).toBe("Business not found!");
@@ -50,7 +53,8 @@ describe('requests', function(){
     });
 
     it("returns a code 400 error for an invalid id", function(done) {
-      request.get(base_url + '/businesses/abc', function(error, response, body) {
+      options.url = base_url + '/businesses/abc';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(400);
         var json = JSON.parse(body);
         expect(json.message).toBe("Invalid id given, must be an integer!");
@@ -61,7 +65,8 @@ describe('requests', function(){
 
     // format should match {“id”: 1,“name”: “...”,...}
     it("returns a properly formatted json body for an existing id", function(done) {
-      request.get(base_url + '/businesses/100', function(error, response, body) {
+      options.url = base_url + '/businesses/100';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(200);
         var json = JSON.parse(body);
         expect(json.id).toBe('100');
@@ -83,9 +88,14 @@ describe('requests', function(){
   });
 
   describe('GET /businesses', function(){
+  var options = {
+      url: base_url + '/businesses/',
+      method: 'GET',
+      headers: {'x-access-token': 'eggs_and_bacon'}};
 
     it("returns by default the first 50 businesses", function(done) {
-      request.get(base_url + '/businesses', function(error, response, body) {
+      options.url = base_url + '/businesses';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(200);
         var json = JSON.parse(body);
         expect(json.businesses.length).toBe(50);
@@ -98,7 +108,8 @@ describe('requests', function(){
     });
 
     it("returns businesses by valid page number", function(done) {
-      request.get(base_url + '/businesses?page=10', function(error, response, body) {
+      options.url = base_url + '/businesses?page=10';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(200);
         var json = JSON.parse(body);
         expect(json.businesses.length).toBe(50);
@@ -111,7 +122,8 @@ describe('requests', function(){
     });
 
     it("returns a 400 error for an invalid page number", function(done) {
-      request.get(base_url + '/businesses?page=bacon', function(error, response, body) {
+      options.url = base_url + '/businesses?page=bacon';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(400);
         var json = JSON.parse(body);
         expect(json.message).toBe("Invalid page number, must be an integer >= 0!");
@@ -121,7 +133,8 @@ describe('requests', function(){
     });
 
     it("return a 404 error for an out of range negative page number", function(done) {
-      request.get(base_url + '/businesses?page=-1', function(error, response, body) {
+      options.url = base_url + '/businesses?page=-1';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(404);
         var json = JSON.parse(body);
         expect(json.message).toBe("Page number out of range!");
@@ -131,7 +144,8 @@ describe('requests', function(){
     });
 
     it("return a 404 error for an out of range high page number", function(done) {
-      request.get(base_url + '/businesses?page=10001', function(error, response, body) {
+      options.url = base_url + '/businesses?page=10001';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(404);
         var json = JSON.parse(body);
         expect(json.message).toBe("Page number out of range!");
@@ -141,7 +155,8 @@ describe('requests', function(){
     });
 
     it("returns businesses for a small page size", function(done) {
-      request.get(base_url + '/businesses?page_size=13', function(error, response, body) {
+      options.url = base_url + '/businesses?page_size=13';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(200);
         var json = JSON.parse(body);
         expect(json.businesses.length).toBe(13);
@@ -154,7 +169,8 @@ describe('requests', function(){
     });
 
     it("returns businesses for a large page size", function(done) {
-      request.get(base_url + '/businesses?page_size=500000', function(error, response, body) {
+      options.url = base_url + '/businesses?page_size=500000';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(200);
         var json = JSON.parse(body);
         expect(json.businesses.length).toBe(50000);
@@ -167,7 +183,8 @@ describe('requests', function(){
     });
 
     it("returns a 400 error for an invalid page size", function(done) {
-      request.get(base_url + '/businesses?page_size=tamales', function(error, response, body) {
+      options.url = base_url + '/businesses?page_size=tamales';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(400);
         var json = JSON.parse(body);
         expect(json.message).toBe("Invalid page size, must be an integer >= 1!");
@@ -177,7 +194,8 @@ describe('requests', function(){
     });
 
     it("returns businesses for a complicated page number and page size combo", function(done) {
-      request.get(base_url + '/businesses?page=69&page_size=713', function(error, response, body) {
+      options.url = base_url + '/businesses?page=69&page_size=713';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(200);
         var json = JSON.parse(body);
         expect(json.businesses.length).toBe(713);
@@ -190,7 +208,8 @@ describe('requests', function(){
     });
 
     it("returns businesses on the last page for a complicated page number and page size combo", function(done) {
-      request.get(base_url + '/businesses?page=70&page_size=713', function(error, response, body) {
+      options.url = base_url + '/businesses?page=70&page_size=713';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(200);
         var json = JSON.parse(body);
         expect(json.businesses.length).toBe(90);
@@ -203,7 +222,8 @@ describe('requests', function(){
     });
 
     it("returns a 404 error for a page number out of range with a custom page size", function(done) {
-      request.get(base_url + '/businesses?page=71&page_size=713', function(error, response, body) {
+      options.url = base_url + '/businesses?page=71&page_size=713';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(404);
         var json = JSON.parse(body);
         expect(json.message).toBe("Page number out of range!");
@@ -216,7 +236,7 @@ describe('requests', function(){
   });
 
   /*describe('POST /authenticate', function(){
-    
+
     it("returns a 404 error for a bad username", function(done) {
       var options = {url: base_url + '/authenticate',
                      method: 'POST',
@@ -227,10 +247,13 @@ describe('requests', function(){
         done();
       });
     });
-  
+
   });*/
 
   describe('misc routes', function(){
+      var options = {
+        headers: {'x-access-token': 'eggs_and_bacon'}
+      };
 
     /*it("can access with access token", function(done) {
       var options = {
@@ -243,9 +266,10 @@ describe('requests', function(){
         done();
       });
     });*/
-    
+
     it("returns a 404 error for an invalid URL", function(done) {
-      request.get(base_url + '/', function(error, response, body) {
+      options.url = base_url + '/';
+      request(options, function(error, response, body) {
         expect(response.statusCode).toBe(404);
         expect(body).toBe("Invalid URL!");
         done();
@@ -253,13 +277,14 @@ describe('requests', function(){
     });
 
     it("returns a 404 error for an invalid request type on a valid URL", function(done) {
-      request.post(base_url + '/businesses', function(error, response, body) {
+      options.url = base_url + '/businesses';
+      request.post(options, function(error, response, body) {
         expect(response.statusCode).toBe(404);
         expect(body).toBe("Invalid URL!");
         done();
       });
     });
-  
+
   });
 
   it('should close the server', function(){
