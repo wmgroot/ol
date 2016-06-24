@@ -16,18 +16,20 @@ app.get('/businesses/:id', function(request, response){
   if(access_token != secret_token){
     response.status(401).json({message: "Unauthorized access."}).end();
   }
-
-  console.log("request params: " + JSON.stringify(request.params));
-  var _id = parseInt(request.params.id);
-
-  if(isNaN(_id)){
-    response.status(400).json({message: "Invalid id given, must be an integer!", id: request.params.id}).end();
-  }
-  else if(_id >= 0 && _id < businesses.length){
-    response.json(businesses[_id]).end();
-  }
   else{
-    response.status(404).json({message: "Business not found!", id: _id}).end();
+
+    console.log("request params: " + JSON.stringify(request.params));
+    var _id = parseInt(request.params.id);
+
+    if(isNaN(_id)){
+      response.status(400).json({message: "Invalid id given, must be an integer!", id: request.params.id}).end();
+    }
+    else if(_id >= 0 && _id < businesses.length){
+      response.json(businesses[_id]).end();
+    }
+    else{
+      response.status(404).json({message: "Business not found!", id: _id}).end();
+    }
   }
 })
 

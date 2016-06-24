@@ -35,6 +35,7 @@ describe('requests', function(){
 
     it("returns status code 401 with no access_token", function(done) {
       options.headers = {}
+      options.url = base_url + '/businesses/0';
       request(options, function(error, response, body) {
         expect(response.statusCode).toBe(401);
         done();
@@ -43,6 +44,7 @@ describe('requests', function(){
 
     it("returns status code 401 with an incorrect access_token", function(done) {
       options.headers = {'x-access-token': 'potato_and_egg'}
+      options.url = base_url + '/businesses/0';
       request(options, function(error, response, body) {
         expect(response.statusCode).toBe(401);
         done();
