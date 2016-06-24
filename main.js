@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
-var exports = module.exports = {};
+var jwt = require('jsonwebtoken');
+var exports = module.exports = {'secret':'eggsandbacon'};
+
 
 var fs = require('fs');
 var csv_parser = require('csv-parse/lib/sync');
@@ -42,6 +44,13 @@ app.get('/businesses', function(request, response){
   }
 })
 
+app.post('/authenticate', function(request, response){
+console.log(request);
+  console.log("request body: " + request.body);
+  username = request.body.username;
+  console.log(username);
+})
+
 app.all('*', function(request, response) {
   response.status(404).end("Invalid URL!");
 });
@@ -60,6 +69,7 @@ function getDataPage(page, page_size){
   return start >= 0 ? businesses.slice(start, end) : null;
 }
 
+app.set('superSecret', exports.secret);
 var server = app.listen(8081, function(){
   var host = server.address().address;
   var port = server.address().port;

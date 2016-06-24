@@ -210,6 +210,18 @@ describe('requests', function(){
 
   });
 
+  describe('POST /authenticate', function(){
+    
+    it("returns a 404 error for a bad username", function(done) {
+      request.post(base_url + '/authenticate', '{"username":"Bad"}', function(error, response, body) {
+        expect(response.statusCode).toBe(404);
+        expect(body).toBe("Invalid Username or Password!");
+        done();
+      });
+    });
+  
+  });
+
   describe('misc routes', function(){
     
     it("returns a 404 error for an invalid URL", function(done) {
